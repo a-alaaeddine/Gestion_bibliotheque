@@ -36,6 +36,18 @@ class LivreRepository extends ServiceEntityRepository
     }
     */
 
+    public function findByKind($genre)
+    {
+        return $this->createQueryBuilder('l')
+            ->innerJoin('l.genres', 'g')
+            ->andWhere('k.nom LIKE :genre')
+            ->setParameter('genre', "%{$genre}%")
+            ->orderBy('l.titre', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     /*
     public function findOneBySomeField($value): ?Livre
     {
