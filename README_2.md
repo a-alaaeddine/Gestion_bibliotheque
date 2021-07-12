@@ -216,3 +216,774 @@ Données indispensables :
 | 3  | 2020-04-01 10:00:00 | NULL                | 3             | 3        |
 
 Données de test : 200 emprunts dont les données sont générées aléatoirement
+
+
+# ECF - Part 2 - Projet bibliothèque - Composants d'accès aux données
+
+
+
+Le but de cet exercice est de maîtriser l'utilisation de composants d'accès aux données d'une application web dynamique.
+
+
+
+Note : cet exercice prolonge l'exercice de création de BDD.
+
+
+
+## Cahier des charges
+
+
+
+Vous devez utiliser des composants d'accès aux données qui réalise les requêtes indiquées plus bas.
+
+
+
+Attention : l'accès à la BDD doit être effectué via un unique utilisateur ayant été créé à cet effet.
+
+
+
+Vous pouvez utiliser les composants d'accès au données de votre choix : PHP vanila, Doctrine (Symfony) ou Eloquent (Laravel) par exemple.
+
+Mais vous êtes vivement encouragé à utiliser Doctrine.
+
+
+
+## Livrables
+
+
+
+Le code doit être livré sous la forme d'un repository git en ligne sur un site comme github, gitlab ou autre.
+
+
+
+Vous avez deux options : soit vous utilisez les composants d'accès aux données d'un framework PHP soit vous n'utilisez aucun framework PHP.
+
+
+
+Quelque soit votre choix, le repository doit contenir les fichiers suivants :
+
+
+
+- un fichier `README.md` (voir ci-dessous)
+
+- un ou des fichiers PHP contenant des requêtes qui utilisent des composants d'accès aux données
+
+
+
+Le fichier `README.md` doit indiquer la procédure à suivre pour :
+
+
+
+- si nécessaire, installer les dépendances (avec composer par exemple)
+
+- lancer le serveur web
+
+- montrer l'URL à ouvrir pour tester les requêtes d'accès aux données
+
+
+
+Attention : en fonction de vos données de test, il se peut que certaines requêtes ne renvoient aucunes données.
+
+Dans ce cas, ne vous inquiétez pas.
+
+Ce qui est évalué, c'est le fonctionnement correct des requêtes, pas la présence ou l'absence de résultats.
+
+
+
+## Prérequis
+
+
+
+- MariaDB
+
+- PHPMyAdmin
+
+- la BDD du projet bibliothèque
+
+
+
+Si vous utilisez Symfony :
+
+
+
+- PHP 7.x ou 8.x
+
+- composer
+
+
+
+## Les requêtes
+
+
+
+### Les utilisateurs
+
+
+
+Requêtes de lecture :
+
+
+
+- la liste complète de tous les utilisateurs (de la table `user`)
+
+- les données de l'utilisateur dont l'id est `1`
+
+- les données de l'utilisateur dont l'email est `foo.foo@example.com`
+
+- les données des utilisateurs dont l'attribut `roles` contient le mot clé `ROLE_EMRUNTEUR`
+
+
+
+### Les livres
+
+
+
+Requêtes de lecture :
+
+
+
+- la liste complète de tous les livres
+
+- les données du livre dont l'id est `1`
+
+- la liste des livres dont le titre contient le mot clé `lorem`
+
+- la liste des livres dont l'id de l'auteur est `2`
+
+- la liste des livres dont le genre contient le mot clé `roman`
+
+
+
+Requêtes de création :
+
+
+
+- ajouter un nouveau livre
+
+- titre : Totum autem id externum
+
+- année d'édition : 2020
+
+- nombre de pages : 300
+
+- code ISBN : 9790412882714
+
+- auteur : Hugues Cartier (id `2`)
+
+- genre : science-fiction (id `6`)
+
+
+
+Requêtes de mise à jour :
+
+
+
+- modifier le livre dont l'id est `2`
+
+- titre : Aperiendum est igitur
+
+- genre : roman d'aventure (id `5`)
+
+
+
+Requêtes de suppression :
+
+
+
+- supprimer le livre dont l'id est `123`
+
+
+
+### Les emprunteurs
+
+
+
+Requêtes de lecture :
+
+
+
+- la liste complète des emprunteurs
+
+- les données de l'emprunteur dont l'id est `3`
+
+- les données de l'emprunteur qui est relié au user dont l'id est `3`
+
+- la liste des emprunteurs dont le nom ou le prénom contient le mot clé `foo`
+
+- la liste des emprunteurs dont le téléphone contient le mot clé `1234`
+
+- la liste des emprunteurs dont la date de création est antérieure au 01/03/2021 exclu (c-à-d strictement plus petit)
+
+- la liste des emprunteurs inactifs (c-à-d dont l'attribut `actif` est égal à `false`)
+
+
+
+### Les emprunts
+
+
+
+Requêtes de lecture :
+
+
+
+- la liste des 10 derniers emprunts au niveau chronologique
+
+- la liste des emprunts de l'emprunteur dont l'id est `2`
+
+- la liste des emprunts du livre dont l'id est `3`
+
+- la liste des emprunts qui ont été retournés avant le 01/01/2021
+
+- la liste des emprunts qui n'ont pas encore été retournés (c-à-d dont la date de retour est nulle)
+
+- les données de l'emprunt du livre dont l'id est `3` et qui n'a pas encore été retournés (c-à-d dont la date de retour est nulle)
+
+
+
+Requêtes de création :
+
+
+
+- ajouter un nouvel emprunt
+
+- date d'emprunt : 01/12/2020 à 16h00
+
+- date de retour : aucune date
+
+- emprunteur : foo foo (id `1`)
+
+- livre : Lorem ipsum dolor sit amet (id `1`)
+
+
+
+Requêtes de mise à jour :
+
+
+
+- modifier l'emprunt dont l'id est `3`
+
+- date de retour : 01/05/2020 à 10h00
+
+
+
+Requêtes de suppression :
+
+
+
+- supprimer l'emprunt dont l'id est `42`
+
+
+# ECF - Part 3 - Projet bibliothèque - Back-end
+
+
+
+Le but de cet exercice est de maîtriser la création de la partie back-end d'une application web dynamique.
+
+
+
+Note : cet exercice prolonge l'exercice d'utilisation de composants d'accès aux données.
+
+
+
+## Cahier des charges
+
+
+
+Vous devez créer le back-end d'une application web qui affiche les pages indiquées plus bas.
+
+
+
+Pour créer le back-end, vous avez le choix des armes : PHP vanila, Symfony, Laravel ou Slim par exemple.
+
+Mais vous êtes vivement encouragé à utiliser Symfony.
+
+
+
+## Livrables
+
+
+
+Le code doit être livré sous la forme d'un repository git en ligne sur un site comme github, gitlab ou autre.
+
+
+
+Vous avez deux options : soit vous utilisez un framework PHP soit vous n'en utilisez pas.
+
+
+
+Quelque soit votre choix, le repository doit contenir les fichiers suivants :
+
+
+
+- un fichier `README.md` (voir ci-dessous)
+
+- des fichiers PHP qui constituent le back-end
+
+
+
+Le fichier `README.md` doit indiquer la procédure à suivre pour :
+
+
+
+- si nécessaire, installer les dépendances (avec composer par exemple)
+
+- lancer le serveur web
+
+- montrer l'URL à ouvrir pour tester l'application web
+
+
+
+## Prérequis
+
+
+
+- MariaDB
+
+- PHPMyAdmin
+
+- la BDD du projet bibliothèque
+
+- les requêtes de données faites avec un composant d'accès aux données
+
+
+
+Si vous utilisez Symfony :
+
+
+
+- PHP 7.x ou 8.x
+
+- composer
+
+
+
+## Les pages
+
+
+
+### Entête
+
+
+
+L'entête du site doit afficher un menu qui propose :
+
+
+
+- un lien clickable qui pointe vers la page d'accueil
+
+- un lien clickable nommé `login` qui permet d'accéder à la page d'authentification (`/login`)
+
+
+
+Et si l'utilisateur est admin, le menu doit aussi proposer des liens vers :
+
+
+
+- la page liste des utilisateurs
+
+- la page liste des livres
+
+- la page liste des auteurs
+
+- la page liste des genres
+
+- la page liste des emprunteurs
+
+- la page liste des emprunts
+
+
+
+### Page d'accueil
+
+
+
+La page d'accueil, accessible par tout le monde, doit afficher un formulaire de recherche et un catalogue des livres.
+
+
+
+Dans le catalogue des livres, le titre doit être un lien clickable qui pointe vers la page détails du livre.
+
+Le formulaire de recherche doit permettre de faire une recherche par mot clé dans le titre, par mot clé dans le nom de l'auteur ou par code ISBN exact.
+
+
+
+- formulaire :
+
+- titre
+
+- auteur
+
+- isbn
+
+
+
+- résultats :
+
+- titre (lien clickable)
+
+- auteur
+
+- année d'édition
+
+- nombre de page
+
+- (optionnel) disponibilité
+
+
+
+- URL : `/`
+
+- méthode : `GET`, `POST`
+
+- accessibilité : tout le monde
+
+
+
+### Page détails d'un livre
+
+
+
+La page détails d'un livre, accessible par tout le monde, doit afficher les données complètes d'un livre et doit aussi indiquer si le livre est disponible ou non (c-à-d s'il fait partie d'un emprunts non rendu ou pas).
+
+
+
+- données :
+
+- titre
+
+- disponibilité
+
+- année d'édition
+
+- nombre de pages
+
+- code ISBN
+
+- cote du livre
+
+- auteur
+
+- genre
+
+
+
+- URL : `/livre/{id}`
+
+- méthode : `GET`
+
+- accessibilité : tout le monde
+
+
+
+### Page d'authentification
+
+
+
+La page d'authentification, accessible par tout le monde, doit afficher un formulaire d'authentification (email et mot de passe).
+
+Les messages d'erreur doivent respecter les règles de sécurité.
+
+Une authentification réussie doit rediriger l'utilisateur vers la page liste des emprunts.
+
+
+
+- formulaire :
+
+- email
+
+- mot de passe
+
+
+
+- résultats : redirection vers la page liste des emprunts
+
+
+
+- URL : `/login`
+
+- méthode : `GET`, `POST`
+
+- accessibilité : tout le monde
+
+
+
+### Pages CRUD des emprunts
+
+
+
+Dans es pages CRUD des emprunts :
+
+
+
+- la page liste des emprunts est accessibles par tout utilisateur authentifié (`ROLE_ADMIN` ou `ROLE_EMRUNTEUR`)
+
+- la page détail d'un emprunt est accessible par tout utilisateur authentifié (`ROLE_ADMIN` ou `ROLE_EMRUNTEUR`)
+
+- les autres pages (création, modification, suppression) ne sont accessibles que par les admins (`ROLE_ADMIN`)
+
+
+
+Dans la page liste des emprunts :
+
+
+
+- si l'utilisateur est un admin (`ROLE_ADMIN`), on peut afficher tous les emprunts
+
+- si l'utilisateur est un emprunteur (`ROLE_EMRUNTEUR`), on ne doit afficher que ses emprunts
+
+
+
+Dans la page détails d'un emprunt :
+
+
+
+- si l'utilisateur est un admin (`ROLE_ADMIN`), il a accès à tous les emprunts
+
+- si l'utilisateur est un emprunteur (`ROLE_EMRUNTEUR`) et qu'il essaie d'afficher un emprunt qui n'est pas à lui, il faut renvoyer une erreur `404 NOT FOUND`
+
+
+
+- les pages de type CRUD des emprunts :
+
+- URL : `/admin/emprunt`
+
+méthode : `GET`
+
+accessibilité : admin, emprunteur
+
+- URL : `/admin/emprunt/new`
+
+méthode : `GET`, `POST`
+
+accessibilité : admin
+
+- URL : `/admin/emprunt/{id}`
+
+méthode : `GET`
+
+accessibilité : admin, emprunteur
+
+- URL : `/admin/emprunt/{id}/edit`
+
+méthode : `GET`, `POST`
+
+accessibilité : admin
+
+- URL : `/admin/emprunt/{id}`
+
+méthode : `DELETE`
+
+accessibilité : admin
+
+
+
+### Les autres pages de type CRUD
+
+
+
+Les pages de type CRUD ne doivent être accessible que pour les utilisateurs de type admin.
+
+
+
+Ces pages doivent permettre de gérer :
+
+
+
+- des utilisateurs (de la table `user`)
+
+- des livres
+
+- des auteurs
+
+- des genres
+
+- des emprunteurs
+
+
+
+- les pages de type CRUD des livres :
+
+- URL : `/admin/livre`
+
+méthode : `GET`
+
+- URL : `/admin/livre/new`
+
+méthode : `GET`, `POST`
+
+- URL : `/admin/livre/{id}`
+
+méthode : `GET`
+
+- URL : `/admin/livre/{id}/edit`
+
+méthode : `GET`, `POST`
+
+- URL : `/admin/livre/{id}`
+
+méthode : `DELETE`
+
+- accessibilité : admin
+
+
+
+Les autres pages de type CRUD sont construites en remplaçant le mot clé `livre` par la ressource correspondante.
+
+Exemple : `/admin/user`, `/admin/auteur`, `/admin/genre`, etc.
+
+
+# ECF - Part 4 - Projet blog - Thème Wordpress
+
+
+
+Le but de cet exercice est de maîtriser la création d'un thème Wordpress de toute pièce.
+
+
+
+## Cahier des charges
+
+
+
+Vous devez créer un thème Wordpress qui affiche les type de page indiqués plus bas.
+
+
+
+Attention : le thème doit impérativement être démarré de zéro, en ne se basant sur aucun framework.
+
+
+
+## Livrables
+
+
+
+Les fichiers doivent être livrées sous la forme d'un repository git en ligne sur un site comme github, gitlab ou autre.
+
+
+
+Le repository doit contenir au minimum les fichiers suivants :
+
+
+
+- un fichier `README.md` (voir ci-dessous)
+
+- un fichier `functions.php`
+
+- un fichier `style.css`
+
+- un fichier `header.php` et un fichier `footer.php`
+
+- un fichier `index.php`
+
+- un fichier `single.php`
+
+- un fichier `page.php`
+
+- un fichier `404.php`
+
+
+
+Le fichier `README.md` doit indiquer la procédure à suivre pour :
+
+
+
+- si nécessaire, installer les dépendances (avec composer par exemple)
+
+- si nécessaire, configurer le thème
+
+
+
+## Prérequis
+
+
+
+- MariaDB
+
+- PHPMyAdmin
+
+- PHP 7.x ou 8.x
+
+- (optionnel) composer
+
+
+
+## Les pages
+
+
+
+### Entête
+
+
+
+Un logo et le titre du blog qui doivent être des liens clickables qui pointent vers la page d'accueil.
+
+
+
+### Pied de page
+
+
+
+Pas d'informations particulières.
+
+
+
+### La page d'accueil
+
+
+
+Le fichier `index.php` fait office de page d'accueil.
+
+
+
+Cette page doit afficher la liste des articles.
+
+Voici les informations qui doivent figurer dans la liste :
+
+
+
+- le titre de l'article, qui doit être un lien clickable qui pointe vers la page de l'article
+
+- la date de publication de l'article
+
+- la vignette de l'article
+
+
+
+### La page d'article
+
+
+
+Cette page doit afficher le contenu d'un article :
+
+
+
+- le titre de l'article
+
+- la date de publication de l'article
+
+- la vignette de l'article
+
+- le texte de l'article
+
+
+
+### La page « page » (type contenu statique)
+
+
+
+Cette page doit afficher le contenu d'une « page » (type de contenu statique) :
+
+
+
+- le titre de l'article
+
+- la vignette de l'article
+
+- le texte de l'article
+
+
+
+### La page 404
+
+
+
+Cette page doit afficher un message d'erreur 404.
